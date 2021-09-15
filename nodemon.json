@@ -1,0 +1,9 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "npm run prebuild --silent && ts-node --project tsconfig.dev.json -r tsconfig-paths/register ./src/server.ts",
+  "env": {
+    "NODEMON": "development"
+  },
+  "ignore": ["src/assets"]
+}
