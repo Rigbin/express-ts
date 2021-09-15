@@ -29,7 +29,7 @@ A useful tool to manage different version of Node.js would be [NVM](https://gith
 Clone the repository and install node packages using `npm`.
 
 ```console
-git clone <TODO... add link!>
+git clone https://github.com/Rigbin/express-ts.git
 cd express-ts
 npm ci --silent
 ```

@@ -4,6 +4,10 @@
   "description": "",
   "author": "Harald Schwab",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rigbin/express-ts"
+  },
   "main": "dist/server.js",
   "scripts": {
     "build": "npm run clean:dist && tsc",
