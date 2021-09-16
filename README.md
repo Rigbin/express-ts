@@ -17,7 +17,98 @@ use [NVM](https://github.com/nvm-sh/nvm)), or using [Docker](#docker).
 
 ### Docker
 
+
+1. Build docker image
+  ```console
+  docker build --no-cache -t "ts-service" .
+  ```
+2. Run docker container
+  ```console
+  docker container run -it -d -p 1234:1234 --name ts-service ts-service
+  ```
+
+Check log-output
+```console
+docker container logs -f ts-service
+```
+
+Stop container
+```console
+docker container stop ts-service
+```
+
+You find also a compose-file in the project for a productive service: [docker-compose.yml](docker-compose.yml). To start the production environment, run the following command in the console
+
+```console
+docker-compose up -d
+```
+
+#### Multi-Stage
+Because we need to transpile TypeScript to JavaScript before we can run the service (without [`ts-node`](https://github.com/TypeStrong/ts-node)), we use the [multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/) functionality of Docker.
+
+For this project, we need two stages.
+
+```dockerfile
+ARG NODE_VERSION=14-stretch
+...
+```
+at the beginning of the Dockerfile, we define an variable `NODE_VERSION` which will be used for the base container.
+
+```dockerfile
+...
+
+FROM node:${NODE_VERSION} AS builder
+
+WORKDIR "/usr/src/app"
+
+ENV NODE_OPTIONS="--max-old-space-size=1024"
+
+COPY package*.json   ./
+COPY tsconfig*.json  ./
+COPY .eslintrc.json  ./
+COPY .eslintignore   ./
+COPY ./src           ./src
+RUN npm ci --silent && npm run build
+
+...
+```
+In stage one, we use a full `node:` container as base. We add a name to it (`AS builder`), that we need later to reference in stage two.
+
+The `NODE_OPTIONS` is needed to avoid errors while build, because the memory requirements at this stage can be higher than available by default.
+
+We copy the needed files into the container and run `npm ci` to download needed node packages (including `devDependencies`) and run the build.
+
+Stage one is finished at this point. We could find the `dist` directory in this container, which we will copy later into the actual Container.
+
+```Dockerfile
+...
+FROM node:${NODE_VERSION}-slim
+
+WORKDIR "/app"
+
+ENV NODE_ENV=production
+ENV SERVICE_PORT=8080
+
+COPY package*.json   ./
+RUN npm ci --silent --only=${NODE_ENV}
+
+## copy compiled files from stage 1
+COPY --from=builder /usr/src/app/dist ./dist
+
+CMD ["node", "/app/dist/server.js"]
+EXPOSE ${SERVICE_PORT}
+```
+
+In stage two, we use the `node:...-slim` container to keep the container as small as possible. We set the `NODE_ENV` environment variable to `production` and the Port, that will be used by the container.
+
+We only copy `package*.json` files, because we only install production `dependencies`.
+
+Now, we copy the `dist/` directory (transpiled JavaScript sources) from the first stage (`builder`) into the actual Container and define the `CMD` to run the service.
+
+### Docker-Dev
+
 **TODO...**
+
 
 ## Prerequisites
 
@@ -117,6 +208,6 @@ Also, checkout the `protected async format`-method or the `FormatData`-type to s
 * [root-less Docker](https://docs.docker.com/engine/security/rootless/)
 * [Docker Compose](https://docs.docker.com/compose/)
 * [TypeScript](https://www.typescriptlang.org/)
-* [Node.js](https://nodejs.org/en/)
+* [Node.js](https://nodejs.org/)
 * [Express](https://expressjs.com/)
 * [Jest](https://jestjs.io/)
