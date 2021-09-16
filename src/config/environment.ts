@@ -9,6 +9,7 @@ config();
 
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
 const PORT: number = +process.env.SERVICE_PORT || 1234;
+const CORS_ALLOWED: string[] = process.env.CORS_ALLOWED?.split(/[\s,]+/) || [];
 
 const APP_ROOT = path.join(__dirname, '..');
 
@@ -19,6 +20,7 @@ const PATHS = {
 };
 
 export {
+  CORS_ALLOWED,
   NODE_ENV,
   PORT,
   PATHS,

@@ -141,7 +141,7 @@ To set custom configurations, a `.env` file could be used. It will be initialize
 | --- | ----------- | ------- |
 | `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`) | `development` |
 | `SERVICE_PORT` | on what port should the service listening on | `1234` |
-
+| `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *space* or *comma (,)* to separate multiple origins | `[]` |
 
 ## Testing
 
