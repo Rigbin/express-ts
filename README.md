@@ -17,7 +17,6 @@ use [NVM](https://github.com/nvm-sh/nvm)), or using [Docker](#docker).
 
 ### Docker
 
-
 1. Build docker image
   ```console
   docker build --no-cache -t "ts-service" .
@@ -132,6 +131,17 @@ npm run start:dev
 ```
 
 To build the project, run `npm run build` or take a look into the [Docker](#docker) section.
+
+## Configuration
+To set custom configurations, a `.env` file could be used. It will be initialized in [environment](./src/config/environment.ts), you can find an [example](.env.example) in the repository.
+
+#### Used Environment Variables
+
+| VAR | DESCRIPTION | DEFAULT |
+| --- | ----------- | ------- |
+| `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`) | `development` |
+| `SERVICE_PORT` | on what port should the service listening on | `1234` |
+
 
 ## Testing
 
