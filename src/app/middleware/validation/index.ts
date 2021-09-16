@@ -2,8 +2,11 @@ import { CONTENT_TYPES, RESPONSE_CODES } from '@config/constants';
 import { NextFunction, Request, Response } from 'express';
 import { ValidationChain, ValidationError, validationResult } from 'express-validator';
 
+
+/** Validate-middleware to validate a list of `ValidationChain`s and automatically stop routing on error */
 export function Validate(validations: ValidationChain[]): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
+    // run all given validators
     await Promise.all(validations.map(validation => validation.run(req)));
 
     const errors = validationResult(req);

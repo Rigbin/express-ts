@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from 'express';
 
 const LOGGER = LogFactory.getLogger('routing-error');
 
+/** RoutingError-Middleware to define default response when some unexpected error occurs on some route */
 export function RoutingError(err: Error, _req: Request, res: Response, _next: NextFunction): void {
   const msg = `general routing error [${err.message}]`;
   LOGGER.error(msg);

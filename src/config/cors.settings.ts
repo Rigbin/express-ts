@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { NODE_ENV, PORT } from './environment';
 
+/** CORS-Whitelist. Extend to your needs */
 const whitelist = [
   `http://localhost:${PORT}`,
 ];

@@ -77,21 +77,39 @@ For the following already base-methods exist.
 
 * `GET /` => `protected async getAll`
 * `POST /` => `protected async post`
+* `GET /:key` => `protected async getByKey`
 * `PUT /:key` => `protected async put`
 * `DELETE /:key` => `protected async delete`
 
-With `protected async getByKey ` also a base-method for `GET /:key` exists, but you have to add a route for it on your
-own, otherwise no sub-routes would be possible.
 
-To add new endpoints, simple add them in the constructor of you child-class like
-in [BaseRouter](./src/app/routes/base.router.ts) or [MainRouter](./src/app/routes/main.router.ts).
+
+To add new endpoints, simple add them in the `routes`-method of you child-class like in [MainRouter](./src/app/routes/main.router.ts)
+or [V1Router](./src/app/routes/v1/v1.router.ts).
+
+```typescript
+protected async routes(_validators?: Validators): Promis<void> {
+  this.route.get('/sub', this.getSub);
+  this.route.post('/some', Middleware, this.postSome);
+  // ...
+}
+```
+
+When you add custom methods for custom routes (recommended way!), don't forget to `bind` them to `this` object in the `bind`-method.
+
+```typescript
+protected bind(): void {
+  this.getSub = this.getSub.bind(this);
+  this.postSome = this.postSome.bind(this);
+  // ...
+}
+```
 
 Also, checkout the `protected async format`-method or the `FormatData`-type to simply send multi-type responses.
 
 ## Planned features
 * WebSocket support
 * Authentication
-* *(better)* Documentation
+* *(extended)* Documentation
 
 
 ## Useful links
