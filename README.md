@@ -211,6 +211,7 @@ Also, checkout the `protected async format`-method or the `FormatData`-type to s
 * WebSocket support
 * Authentication
 * *(extended)* Documentation
+* *TODO: consistent error response (json)*
 
 
 ## Useful links
