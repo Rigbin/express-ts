@@ -2,6 +2,7 @@ import { RESPONSE_CODES } from '@config/constants';
 import { NAME, PATHS, VERSION } from '@config/environment';
 import { BaseRouter, Validators } from '@routes/base.router';
 import { V1Route } from '@routes/v1';
+import { requestDetails } from '@util/request';
 import express, { NextFunction, Request, Response } from 'express';
 
 export class MainRouter extends BaseRouter {
@@ -39,7 +40,7 @@ export class MainRouter extends BaseRouter {
       json: {
         name: NAME,
         version: VERSION,
-        ...this.requestDetails(req),
+        ...requestDetails(req),
       },
     });
   }
@@ -53,7 +54,7 @@ export class MainRouter extends BaseRouter {
     this.debugErrorRequest(req);
     this.format(req, res, {
       plain: '404 - page not found',
-      json: { errors: [{ code: RESPONSE_CODES.NOT_FOUND, message: 'page not found' }], ...this.requestDetails(req) },
+      json: { errors: [{ code: RESPONSE_CODES.NOT_FOUND, message: 'page not found' }], ...requestDetails(req) },
     }, RESPONSE_CODES.NOT_FOUND);
   }
 
@@ -70,7 +71,7 @@ export class MainRouter extends BaseRouter {
         errors: [{
           code: RESPONSE_CODES.NOT_IMPLEMENTED,
           message: 'not implemented',
-        }], ...this.requestDetails(req),
+        }], ...requestDetails(req),
       },
     }, RESPONSE_CODES.NOT_IMPLEMENTED);
     next();

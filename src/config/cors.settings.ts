@@ -22,6 +22,13 @@ export const CorsOptionsDelegate = (req: Request,
     });
   } else {
     const msg = `${origin} not allowed by CORS`;
-    return callback(new Error(msg));
+    return callback(new CorsError(origin, msg));
   }
 };
+
+class CorsError extends Error {
+  constructor(public origin?: string, message?: string) {
+    super(message);
+    this.name = 'CorsError';
+  }
+}

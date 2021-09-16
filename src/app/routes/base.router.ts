@@ -1,6 +1,7 @@
 import { CONTENT_TYPES, RESPONSE_CODES } from '@config/constants';
 import { keyExistsValidator, Validate } from '@middleware/validation';
 import { LogFactory } from '@util/logger';
+import { requestDetails } from '@util/request';
 import { Request, Response, Router } from 'express';
 import { ValidationChain } from 'express-validator';
 
@@ -31,19 +32,6 @@ export type FormatData = {
   xml?: string,
   /** (optional) custom content-types output for `res.format` */
   custom?: Record<string, () => void>
-};
-
-type RequestDetails = {
-  /** full requested url (e.g. `http://localhost:1234/test?foo=bar) */
-  url: string,
-  /** request method (GET, POST, PUT, ...) */
-  method: string,
-  /** request body if given */
-  body?: Record<string, unknown>,
-  /** request query if given */
-  query?: Record<string, unknown>,
-  /** (current) timestamp */
-  timestamp: string
 };
 
 export abstract class BaseRouter {
@@ -170,20 +158,6 @@ export abstract class BaseRouter {
   }
 
   /**
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @returns `RequestDetails`, details of the request to use in response
-   */
-  protected requestDetails(req: Request): RequestDetails {
-    return {
-      url: `${req.protocol}://${req.get('host')}${req.baseUrl}${req.path}`,
-      method: req.method,
-      body: req.body && Object.keys(req.body).length > 0 ? req.body : undefined,
-      query: req.query && Object.keys(req.query).length > 0 ? req.query : undefined,
-      timestamp: new Date().toUTCString(),
-    };
-  }
-
-  /**
    * content-type based response
    * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
    * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
@@ -214,7 +188,7 @@ export abstract class BaseRouter {
         res.send(message);
       },
       [CONTENT_TYPES.JSON]: () => {
-        res.json({ errors: [{ message }], ...this.requestDetails(req) });
+        res.json({ errors: [{ message }], ...requestDetails(req) });
       },
       default: () => this.unsupportedContentType(req, res),
     });
