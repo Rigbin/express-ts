@@ -154,8 +154,7 @@ in [environment](./src/config/environment.ts), you can find an [example](.env.ex
 | --- | ----------- | ------- |
 | `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`) | `development` |
 | `SERVICE_PORT` | on what port should the service listening on | `1234` |
-| `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *
-space* or *comma (,)* to separate multiple origins | `[]` |
+| `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *space* or *comma (,)* to separate multiple origins | `[]` |
 
 ## Testing
 
