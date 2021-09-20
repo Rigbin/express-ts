@@ -41,7 +41,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
     "module-alias": "^2.2.2",
-    "typescript-logging": "^1.0.0"
+    "typescript-logging": "^1.0.0",
+    "ws": "^8.2.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -50,6 +51,7 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",
     "@types/supertest": "^2.0.11",
+    "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "copyfiles": "^2.4.1",

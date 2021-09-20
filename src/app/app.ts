@@ -3,6 +3,7 @@ import { CorsOptionsDelegate } from '@config/cors.settings';
 import { NAME, NODE_ENV, VERSION } from '@config/environment';
 import { RoutingErrorHandler } from '@middleware/error';
 import { RequestLogging } from '@middleware/logging';
+import { WSUpgrade } from '@middleware/ws';
 import { LogFactory, Logger } from '@util/logger';
 import cors from 'cors';
 import express, { Express } from 'express';
@@ -38,6 +39,7 @@ export default class App {
   protected setMiddleware(): void {
     this.app.use(cors(CorsOptionsDelegate));
     this.app.use(RequestLogging);
+    this.app.use(WSUpgrade());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json({ limit: '5MB' }));
   }

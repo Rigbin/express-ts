@@ -231,7 +231,8 @@ Also, checkout the `protected async format`-method or the `FormatData`-type to s
 
 ## Planned features
 
-* WebSocket support
+* ~~WebSocket support~~
+  * *TODO: extend docu, add example*
 * Authentication
 * *(extended)* Documentation
 * *TODO: consistent error response (json)*
