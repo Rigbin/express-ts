@@ -1,30 +1,23 @@
-import { CONTENT_TYPES, RESPONSE_CODES } from '@config/constants';
+import { RESPONSE_CODES } from '@config/constants';
+import { CustomError } from '@util/error';
 import { LogFactory } from '@util/logger';
-import { requestDetails } from '@util/request';
+import { errorResponse } from '@util/response';
 import { NextFunction, Request, Response } from 'express';
 
 const LOGGER = LogFactory.getLogger('routing-error');
 
 /** RoutingError-Middleware to define default response when some unexpected error occurs on some route */
-export function RoutingError(err: Error, req: Request, res: Response, _next: NextFunction): void {
+export async function RoutingErrorHandler(err: Error, req: Request, res: Response, _next: NextFunction): Promise<void> {
   const msg = `general routing error [${err.message}]`;
   LOGGER.error(msg);
   LOGGER.debug(msg, err);
-  res.status(RESPONSE_CODES.SERVER_ERROR).format({
-    [CONTENT_TYPES.PLAIN]: () => {
-      res.send(msg);
-    },
-    [CONTENT_TYPES.JSON]: () => {
-      res.json({
-        errors: [
-          { name: 'RoutingError', message: 'general routing error' },
-          { ...err, message: err.message || '' },
-        ], ...requestDetails(req)
-      });
-    },
-    default: () => {
-      res.send(msg);
-    }
-  });
-  // next(err);
+  return errorResponse(req, res,
+    [new RoutingError(req.baseUrl + req.path, 'general routing error'), err],
+    RESPONSE_CODES.SERVER_ERROR);
+}
+
+class RoutingError extends CustomError {
+  constructor(public route: string, msg: string) {
+    super(msg);
+  }
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { RoutingError } from '../../../src/app/middleware/error';
+import { RoutingErrorHandler } from '../../../src/app/middleware/error';
 import { CONTENT_TYPES } from '../../../src/config/constants';
 import { NAME, VERSION } from '../../../src/config/environment';
 import { TestApp, TestResponse } from '../e2e-setup';
@@ -32,14 +32,14 @@ describe('express app testing', () => {
     });
 
     test.each([
-      ['POST', '/'],
-      ['PUT', '/'],
-      ['DELETE', '/'],
-      ['PATCH', '/'],
-      ['OPTIONS', '/'],
-      ['TRACE', '/'],
-    ])('should response 501 on %s', async (method: string, url: string) => {
-      const response: TestResponse = await TestApp[<'post' | 'put' | 'delete' | 'head'>method.toLowerCase()](url);
+      { method: 'POST', url: '/' },
+      { method: 'PUT', url: '/' },
+      { method: 'DELETE', url: '/' },
+      { method: 'PATCH', url: '/' },
+      { method: 'OPTIONS', url: '/' },
+      { method: 'TRACE', url: '/' },
+    ])('should response 501 on %s', async ({ method, url }) => {
+      const response: TestResponse = await TestApp[<'post' | 'put' | 'delete' | 'patch' | 'options' | 'trace'>method.toLowerCase()](url);
 
       expect(response.status).toBe(501);
       expect(response.text).toMatch(/not implemented/);
@@ -51,31 +51,32 @@ describe('express app testing', () => {
       expect(response.status).toBe(500);
     });
   });
-});
 
-describe('routing error tests', () => {
-  let req: Request;
-  let res: Response;
-  const next = jest.fn();
-  const statusMock = jest.fn();
-  const sendMock = jest.fn();
+  describe('routing error tests', () => {
+    let req: Request;
+    let res: Response;
+    const next = jest.fn();
+    const statusMock = jest.fn();
+    const sendMock = jest.fn();
 
-  beforeEach(() => {
-    req = {} as Request;
-    res = {
-      status: statusMock,
-      send: sendMock,
-    } as unknown as Response;
-    next.mockClear();
-  });
-
-  test('should handle error', () => {
-    statusMock.mockImplementation((status) => {
-      expect(status).toBe(500);
-      return res;
+    beforeEach(() => {
+      req = {} as Request;
+      res = {
+        status: statusMock,
+        send: sendMock,
+      } as unknown as Response;
+      next.mockClear();
     });
 
-    RoutingError(new Error('testerror'), req, res, next);
-    expect(next).toBeCalledTimes(0);
+    test('should handle error', () => {
+      statusMock.mockImplementation((status) => {
+        expect(status).toBe(500);
+        return res;
+      });
+
+      RoutingErrorHandler(new Error('testerror'), req, res, next);
+      expect(next).toBeCalledTimes(0);
+    });
   });
 });
+

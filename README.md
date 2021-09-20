@@ -36,25 +36,30 @@ Stop container
 docker container stop ts-service
 ```
 
-You find also a compose-file in the project for a productive service: [docker-compose.yml](docker-compose.yml). To start the production environment, run the following command in the console
+You find also a compose-file in the project for a productive service: [docker-compose.yml](docker-compose.yml). To start
+the production environment, run the following command in the console
 
 ```console
 docker-compose up -d
 ```
 
 #### Multi-Stage
-Because we need to transpile TypeScript to JavaScript before we can run the service (without [`ts-node`](https://github.com/TypeStrong/ts-node)), we use the [multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/) functionality of Docker.
+
+Because we need to transpile TypeScript to JavaScript before we can run the service (
+without [`ts-node`](https://github.com/TypeStrong/ts-node)), we use
+the [multi-stage](https://docs.docker.com/develop/develop-images/multistage-build/) functionality of Docker.
 
 For this project, we need two stages.
 
 ```dockerfile
 ARG NODE_VERSION=14-stretch
-...
+#...
 ```
+
 at the beginning of the Dockerfile, we define an variable `NODE_VERSION` which will be used for the base container.
 
 ```dockerfile
-...
+#...
 
 FROM node:${NODE_VERSION} AS builder
 
@@ -69,18 +74,23 @@ COPY .eslintignore   ./
 COPY ./src           ./src
 RUN npm ci --silent && npm run build
 
-...
+#...
 ```
-In stage one, we use a full `node:` container as base. We add a name to it (`AS builder`), that we need later to reference in stage two.
 
-The `NODE_OPTIONS` is needed to avoid errors while build, because the memory requirements at this stage can be higher than available by default.
+In stage one, we use a full `node:` container as base. We add a name to it (`AS builder`), that we need later to
+reference in stage two.
 
-We copy the needed files into the container and run `npm ci` to download needed node packages (including `devDependencies`) and run the build.
+The `NODE_OPTIONS` is needed to avoid errors while build, because the memory requirements at this stage can be higher
+than available by default.
 
-Stage one is finished at this point. We could find the `dist` directory in this container, which we will copy later into the actual Container.
+We copy the needed files into the container and run `npm ci` to download needed node packages (
+including `devDependencies`) and run the build.
+
+Stage one is finished at this point. We could find the `dist` directory in this container, which we will copy later into
+the actual Container.
 
 ```Dockerfile
-...
+#...
 FROM node:${NODE_VERSION}-slim
 
 WORKDIR "/app"
@@ -98,16 +108,17 @@ CMD ["node", "/app/dist/server.js"]
 EXPOSE ${SERVICE_PORT}
 ```
 
-In stage two, we use the `node:...-slim` container to keep the container as small as possible. We set the `NODE_ENV` environment variable to `production` and the Port, that will be used by the container.
+In stage two, we use the `node:...-slim` container to keep the container as small as possible. We set the `NODE_ENV`
+environment variable to `production` and the Port, that will be used by the container.
 
 We only copy `package*.json` files, because we only install production `dependencies`.
 
-Now, we copy the `dist/` directory (transpiled JavaScript sources) from the first stage (`builder`) into the actual Container and define the `CMD` to run the service.
+Now, we copy the `dist/` directory (transpiled JavaScript sources) from the first stage (`builder`) into the actual
+Container and define the `CMD` to run the service.
 
 ### Docker-Dev
 
 **TODO...**
-
 
 ## Prerequisites
 
@@ -133,7 +144,9 @@ npm run start:dev
 To build the project, run `npm run build` or take a look into the [Docker](#docker) section.
 
 ## Configuration
-To set custom configurations, a `.env` file could be used. It will be initialized in [environment](./src/config/environment.ts), you can find an [example](.env.example) in the repository.
+
+To set custom configurations, a `.env` file could be used. It will be initialized
+in [environment](./src/config/environment.ts), you can find an [example](.env.example) in the repository.
 
 #### Used Environment Variables
 
@@ -141,7 +154,8 @@ To set custom configurations, a `.env` file could be used. It will be initialize
 | --- | ----------- | ------- |
 | `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`) | `development` |
 | `SERVICE_PORT` | on what port should the service listening on | `1234` |
-| `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *space* or *comma (,)* to separate multiple origins | `[]` |
+| `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *
+space* or *comma (,)* to separate multiple origins | `[]` |
 
 ## Testing
 
@@ -182,25 +196,34 @@ For the following already base-methods exist.
 * `PUT /:key` => `protected async put`
 * `DELETE /:key` => `protected async delete`
 
-
-
-To add new endpoints, simple add them in the `routes`-method of you child-class like in [MainRouter](./src/app/routes/main.router.ts)
+To add new endpoints, simple add them in the `routes`-method of you child-class like
+in [MainRouter](./src/app/routes/main.router.ts)
 or [V1Router](./src/app/routes/v1/v1.router.ts).
 
 ```typescript
-protected async routes(_validators?: Validators): Promis<void> {
-  this.route.get('/sub', this.getSub);
-  this.route.post('/some', Middleware, this.postSome);
+class SomeRouter extends BaseRouter {
+  // ...
+  protected async routes(_validators?: Validators): Promis<void> {
+    this.route.get('/sub', this.getSub);
+    this.route.post('/some', Middleware, this.postSome);
+    // ...
+  }
+
   // ...
 }
 ```
 
-When you add custom methods for custom routes (recommended way!), don't forget to `bind` them to `this` object in the `bind`-method.
+When you add custom methods for custom routes (recommended way!), don't forget to `bind` them to `this` object in
+the `bind`-method.
 
 ```typescript
-protected bind(): void {
-  this.getSub = this.getSub.bind(this);
-  this.postSome = this.postSome.bind(this);
+class SomeRouter extends BaseRouter {
+  // ...
+  protected bind(): void {
+    this.getSub = this.getSub.bind(this);
+    this.postSome = this.postSome.bind(this);
+    // ...
+  }
   // ...
 }
 ```
@@ -208,11 +231,11 @@ protected bind(): void {
 Also, checkout the `protected async format`-method or the `FormatData`-type to simply send multi-type responses.
 
 ## Planned features
+
 * WebSocket support
 * Authentication
 * *(extended)* Documentation
 * *TODO: consistent error response (json)*
-
 
 ## Useful links
 

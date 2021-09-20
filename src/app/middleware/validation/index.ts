@@ -1,4 +1,5 @@
 import { CONTENT_TYPES, RESPONSE_CODES } from '@config/constants';
+import { requestDetails } from '@util/request';
 import { NextFunction, Request, Response } from 'express';
 import { ValidationChain, ValidationError, validationResult } from 'express-validator';
 
@@ -19,7 +20,7 @@ export function Validate(validations: ValidationChain[]): (req: Request, res: Re
         res.send(reduce(errors.array()));
       },
       [CONTENT_TYPES.JSON]: () => {
-        res.json({ errors: errors.array() });
+        res.json({ errors: errors.array(), ...requestDetails(req) });
       },
       default: () => {
         res.send(reduce(errors.array()));

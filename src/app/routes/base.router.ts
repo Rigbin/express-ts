@@ -2,6 +2,7 @@ import { CONTENT_TYPES, RESPONSE_CODES } from '@config/constants';
 import { keyExistsValidator, Validate } from '@middleware/validation';
 import { LogFactory } from '@util/logger';
 import { requestDetails } from '@util/request';
+import { ResponseError } from '@util/response';
 import { Request, Response, Router } from 'express';
 import { ValidationChain } from 'express-validator';
 
@@ -188,7 +189,7 @@ export abstract class BaseRouter {
         res.send(message);
       },
       [CONTENT_TYPES.JSON]: () => {
-        res.json({ errors: [{ message }], ...requestDetails(req) });
+        res.json({ errors: [new ResponseError(RESPONSE_CODES.NOT_IMPLEMENTED, message)], ...requestDetails(req) });
       },
       default: () => this.unsupportedContentType(req, res),
     });

@@ -1,7 +1,7 @@
 import { MainRoute } from '@app/routes';
 import { CorsOptionsDelegate } from '@config/cors.settings';
 import { NAME, NODE_ENV, VERSION } from '@config/environment';
-import { RoutingError } from '@middleware/error';
+import { RoutingErrorHandler } from '@middleware/error';
 import { RequestLogging } from '@middleware/logging';
 import { LogFactory, Logger } from '@util/logger';
 import cors from 'cors';
@@ -32,7 +32,7 @@ export default class App {
    */
   protected setRouter(): void {
     this.app.use(MainRoute.router);
-    this.app.use(RoutingError);
+    this.app.use(RoutingErrorHandler);
   }
 
   protected setMiddleware(): void {

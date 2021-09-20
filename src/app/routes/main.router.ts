@@ -3,7 +3,8 @@ import { NAME, PATHS, VERSION } from '@config/environment';
 import { BaseRouter, Validators } from '@routes/base.router';
 import { V1Route } from '@routes/v1';
 import { requestDetails } from '@util/request';
-import express, { NextFunction, Request, Response } from 'express';
+import { ResponseError } from '@util/response';
+import express, { Request, Response } from 'express';
 
 export class MainRouter extends BaseRouter {
   constructor(validators?: Validators) {
@@ -54,7 +55,7 @@ export class MainRouter extends BaseRouter {
     this.debugErrorRequest(req);
     this.format(req, res, {
       plain: '404 - page not found',
-      json: { errors: [{ code: RESPONSE_CODES.NOT_FOUND, message: 'page not found' }], ...requestDetails(req) },
+      json: { errors: [new ResponseError(RESPONSE_CODES.NOT_FOUND, 'page not found')], ...requestDetails(req) },
     }, RESPONSE_CODES.NOT_FOUND);
   }
 
@@ -63,18 +64,14 @@ export class MainRouter extends BaseRouter {
    * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
    * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
    */
-  private async other501(req: Request, res: Response, next: NextFunction): Promise<void> {
+  private async other501(req: Request, res: Response): Promise<void> {
     this.debugErrorRequest(req);
     this.format(req, res, {
       plain: '501 - not implemented',
       json: {
-        errors: [{
-          code: RESPONSE_CODES.NOT_IMPLEMENTED,
-          message: 'not implemented',
-        }], ...requestDetails(req),
+        errors: [new ResponseError(RESPONSE_CODES.NOT_IMPLEMENTED, 'not implemented')], ...requestDetails(req),
       },
     }, RESPONSE_CODES.NOT_IMPLEMENTED);
-    next();
   }
 
   private debugErrorRequest(req: Request): void {

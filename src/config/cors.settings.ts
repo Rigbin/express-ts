@@ -1,3 +1,4 @@
+import { CustomError } from '@util/error';
 import { Request } from 'express';
 import { CORS_ALLOWED, NODE_ENV, PORT } from './environment';
 
@@ -26,9 +27,8 @@ export const CorsOptionsDelegate = (req: Request,
   }
 };
 
-class CorsError extends Error {
-  constructor(public origin?: string, message?: string) {
-    super(message);
-    this.name = 'CorsError';
+class CorsError extends CustomError {
+  constructor(public origin: string, msg: string) {
+    super(msg);
   }
 }
