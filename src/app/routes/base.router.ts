@@ -15,10 +15,10 @@ const emptyValidators = {
 };
 
 export type Validators = {
-  get?: ValidationChain[],
-  post?: ValidationChain[],
-  put?: ValidationChain[],
-  delete?: ValidationChain[],
+  get: ValidationChain[],
+  post: ValidationChain[],
+  put: ValidationChain[],
+  delete: ValidationChain[],
 };
 
 /**  */
@@ -78,7 +78,7 @@ export abstract class BaseRouter {
    * // ...
    * ```
    */
-  protected async routes(_validators?: Validators): Promise<void> {
+  protected routes(_validators?: Validators): void {
     // add your individual routes here (see constructor);
   }
 

@@ -11,7 +11,7 @@ export class MainRouter extends BaseRouter {
     super(validators);
   }
 
-  protected async routes(_validators?: Validators): Promise<void> {
+  override async routes(_validators?: Validators): Promise<void> {
     // static place for assets that should be provided directly (e.g. images, videos, ...)
     this.router.use('/assets', express.static(PATHS.ASSETS));
     // static place for custom web content (e.g. documentation or administration pages)
@@ -23,7 +23,7 @@ export class MainRouter extends BaseRouter {
     this.router.use('/*', this.other501);
   }
 
-  protected bind(): void {
+  override bind(): void {
     this.get404 = this.get404.bind(this);
     this.other501 = this.other501.bind(this);
   }
@@ -34,7 +34,7 @@ export class MainRouter extends BaseRouter {
    * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
    * response will be information about application (name, version, ...)
    */
-  protected async getAll(req: Request, res: Response): Promise<void> {
+  override async getAll(req: Request, res: Response): Promise<void> {
     this.logger.debug(`app called via ${req.hostname} with ${req.method}`);
     this.format(req, res, {
       plain: `You are on ${NAME} in version '${VERSION}'`,

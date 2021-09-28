@@ -1,1 +1,1 @@
-export { errorResponse, ResponseError } from './error';
+export { errorResponse, ResponseError, ErrorResponse } from './error';
