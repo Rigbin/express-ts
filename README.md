@@ -229,6 +229,15 @@ class SomeRouter extends BaseRouter {
 
 Also, checkout the `protected async format`-method or the `FormatData`-type to simply send multi-type responses.
 
+## API-Documentation
+
+Support for [OpenAPI/Swagger](https://swagger.io/specification/) added, using [express-jsdoc-swagger](https://www.npmjs.com/package/express-jsdoc-swagger).
+Documentation for endpoints will be automatically created via JSDoc comments in `.router.ts` files.
+
+Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
+
+> **TODO**: Add examples
+
 ## Planned features
 
 * ~~WebSocket support~~
