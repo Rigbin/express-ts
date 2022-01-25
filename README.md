@@ -18,20 +18,25 @@ use [NVM](https://github.com/nvm-sh/nvm)), or using [Docker](#docker).
 ### Docker
 
 1. Build docker image
+
   ```console
   docker build --no-cache -t "ts-service" .
   ```
+
 2. Run docker container
+
   ```console
   docker container run -it -d -p 1234:1234 --name ts-service ts-service
   ```
 
 Check log-output
+
 ```console
 docker container logs -f ts-service
 ```
 
 Stop container
+
 ```console
 docker container stop ts-service
 ```
@@ -155,7 +160,7 @@ in [environment](./src/config/environment.ts), you can find an [example](.env.ex
 | `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`)| `development` |
 | `SERVICE_PORT` | on what port should the service listening on | `1234` |
 | `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *space* or *comma (,)* to separate multiple origins | `[]` |
-| `SWAGGER_DESCRIPTION` | custom description displayed on swagger-ui, uses project description from otherwise | see [package.json](./package.json) |
+| `SWAGGER_DESCRIPTION` | custom description displayed on swagger-ui, uses project description otherwise | see [package.json](./package.json) |
 | `SWAGGER_LISENCE` | Lisence name displayed on swagger-ui, uses project license otherwise | see [package.json](./package.json) |                                                                                                                                     
 
 ## Testing
@@ -225,6 +230,7 @@ class SomeRouter extends BaseRouter {
     this.postSome = this.postSome.bind(this);
     // ...
   }
+
   // ...
 }
 ```
@@ -233,8 +239,9 @@ Also, checkout the `protected async format`-method or the `FormatData`-type to s
 
 ## API-Documentation
 
-Support for [OpenAPI/Swagger](https://swagger.io/specification/) added, using [express-jsdoc-swagger](https://www.npmjs.com/package/express-jsdoc-swagger).
-Documentation for endpoints will be automatically created via JSDoc comments in `.router.ts` files.
+Support for [OpenAPI/Swagger](https://swagger.io/specification/) added,
+using [express-jsdoc-swagger](https://www.npmjs.com/package/express-jsdoc-swagger). Documentation for endpoints will be
+automatically created via JSDoc comments in `.router.ts` files.
 
 Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 
@@ -247,6 +254,8 @@ Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 * Authentication
 * *(extended)* Documentation
 * *TODO: consistent error response (json)*
+* ~~[Swagger](https://swagger.io/specification/) support~~
+  * *TODO: add examples*
 
 ## Useful links
 
