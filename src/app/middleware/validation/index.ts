@@ -3,7 +3,6 @@ import { requestDetails } from '@util/request';
 import { NextFunction, Request, Response } from 'express';
 import { ValidationChain, ValidationError, validationResult } from 'express-validator';
 
-
 /** Validate-middleware to validate a list of `ValidationChain`s and automatically stop routing on error */
 export function Validate(validations: ValidationChain[]): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -36,3 +35,14 @@ function reduce(errors: ValidationError[]): string {
 }
 
 export { keyExistsValidator } from './key-exists.validator';
+
+
+/**
+ * express-validator ValidationError, see also [express-validator](https://express-validator.github.io/docs/)
+ * @typedef {object} ValidationError
+ * @property {string} param.required
+ * @property {*} msg.required
+ * @property {array<ValidationError>} nestedErrors
+ * @property {*} location
+ * @property {*} value
+ */

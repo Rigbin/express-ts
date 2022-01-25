@@ -26,13 +26,23 @@ function reduce(errors: Error[]): string {
   }, '').trim();
 }
 
-
+/**
+ * A ResponseError
+ * @typedef {CustomError} ResponseError
+ * @extends {CustomError}
+ * @property {number} status - status code regarding to error
+ */
 export class ResponseError extends CustomError {
   constructor(public status: number, msg: string) {
     super(msg);
   }
 }
 
+/**
+ * An error response
+ * @typedef {allOf|object|RequestDetails} ErrorResponse
+ * @property {array<ResponseError|ValidationError>} errors - list of errors, according to request
+ */
 export interface ErrorResponse extends RequestDetails {
   errors: (ResponseError | ValidationError)[];
 }

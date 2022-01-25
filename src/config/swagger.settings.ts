@@ -1,6 +1,11 @@
 import { PATHS, PROJECT_NAME, PROJECT_VERSION, SWAGGER_DESCRIPTION, SWAGGER_LICENSE } from '@config/environment';
 import { Options } from 'express-jsdoc-swagger';
 
+
+/**
+ * Checkout [express-jsdoc-swagger]{@link https://brikev.github.io/express-jsdoc-swagger-docs/#/configuration?id=configuration}
+ * for details
+ */
 export const swaggerSettings: Options = {
   info: {
     version: PROJECT_VERSION,
@@ -11,7 +16,7 @@ export const swaggerSettings: Options = {
     },
   },
   baseDir: PATHS.APP_ROOT,
-  filesPattern: './app/routes/**/*.router.ts',
+  filesPattern: './**/*.ts',
   swaggerUIPath: '/api-docs',
   exposeSwaggerUI: true,
   exposeApiDocs: false,

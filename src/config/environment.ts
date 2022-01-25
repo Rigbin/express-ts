@@ -9,6 +9,7 @@ config();
 
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
 const PORT: number = parseInt(process.env.SERVICE_PORT || '1234');
+/** Allow CORS for individual URLs via custom config. Checkout {@link https://github.com/Rigbin/express-ts#configuration README} */
 const CORS_ALLOWED: string[] = process.env.CORS_ALLOWED?.split(/[\s,]+/) || [];
 
 const SWAGGER_LICENSE: string = process.env.SWAGGER_LICENSE || license;

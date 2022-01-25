@@ -21,20 +21,22 @@ export type Validators = {
   delete: ValidationChain[],
 };
 
-/**  */
+/**
+ * @property {string} plain.required - plain-text output for `res.format`
+ * @property {object} json.required - json output for `res.format`
+ * @property {string} html - *optional* html output for `res.format`
+ * @property {string} xml - *optional* xml output for `res.format`
+ * @property {*} custom - *optional* custom content-types output for `res.format`
+ * */
 export type FormatData = {
-  /** plain-text output for `res.format` */
   plain: string,
-  /** json output for `res.format` */
   json: Record<string, unknown>,
-  /** (optional) html output for `res.format` */
   html?: string,
-  /** (optional) xml output for `res.format` */
   xml?: string,
-  /** (optional) custom content-types output for `res.format` */
   custom?: Record<string, () => void>
 };
 
+/** Basic Router class, every router in project should extend from it */
 export abstract class BaseRouter {
   protected logger = LogFactory.getLogger(this.constructor.name);
   private readonly _router: Router;
@@ -59,24 +61,27 @@ export abstract class BaseRouter {
   }
 
   /**
-   * @returns [Express `Router`](https://expressjs.com/en/api.html#router) to be used as reference in parent router.
+   * @return {Router} router to be used as reference in parent router.
    */
   public get router(): Router {
     return this._router;
   }
 
   /**
-   * Method to put your **custom routes** into
-   * Checkout [Express Routing](https://expressjs.com/en/guide/routing.html) for usage
-   * Checkout `constructor` of `BaseRouter` for examples
-   * When using custom methods as callsbacks, don't forget to `bind` them in `protected bind()`
-   * @param _validators List of `Validators` that could be assigned via middleware [`Validate`](../middleware/validation/index.ts)
+   * Method to add your **custom routes**
    *
-   * ```typescript
+   * @see {@link https://expressjs.com/en/guide/routing.html Express Routing}
+   * @see {@link constructor constructor()} for examples
+   *
+   * When using custom methods as callbacks, don't forget to
+   * {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind bind}
+   * them in {@link bind protected bind()}
+   *
+   * @param _validators List of {@link Validators} that could be assigned via middleware {@link Validate}
+   *
+   * @example
    * this.router.get('/something', this.getSomething);
    * this.router.post('/data', Middleware, this.postData);
-   * // ...
-   * ```
    */
   protected routes(_validators?: Validators): void {
     // add your individual routes here (see constructor);
@@ -84,16 +89,16 @@ export abstract class BaseRouter {
 
   /**
    * Method to bind your custom methods.
-   * Needed to function invocation as callback, at most are used in route definitions (see `constructor`)
+   * Needed for {@link https://www.w3schools.com/js/js_function_invocation.asp function invocation} as callback,
+   * at most are used in route definitions (see {@link constructor constructor()})
    *
-   * When you have custom methods, bind `this` to them as in this example
-   * ```typescript
+   * When you have custom methods, bind `this` to them as in the following example
+   * @example
    * private myFunc(): any {}
    *
    * protected bind(): void {
    *  this.myFunc = this.myFunc.bind(this);
    * }
-   * ```
    */
   protected bind(): void {
     // add your individual binds here (see constructor)
@@ -101,8 +106,8 @@ export abstract class BaseRouter {
 
   /**
    * default-callback for route GET '/'
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    */
   protected async getAll(req: Request, res: Response): Promise<void> {
     return this.notImplemented(req, res);
@@ -110,8 +115,8 @@ export abstract class BaseRouter {
 
   /**
    * default-callback for route GET '/:key'
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    * access the **key**-value through `req.params.key
    */
   protected async getByKey(req: Request, res: Response): Promise<void> {
@@ -120,8 +125,8 @@ export abstract class BaseRouter {
 
   /**
    * default-callback for route POST '/'
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    * access the post-body through `req.body`
    */
   protected async post(req: Request, res: Response): Promise<void> {
@@ -130,8 +135,8 @@ export abstract class BaseRouter {
 
   /**
    * default-callback for route PUT '/:key'
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    * access the **key**-value through `req.params.key`
    * access the put-body through `req.body`
    */
@@ -141,8 +146,8 @@ export abstract class BaseRouter {
 
   /**
    * default-callback for route DELETE '/:key'
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    * access the **key**-value through `req.params.key`
    */
   protected async delete(req: Request, res: Response): Promise<void> {
@@ -151,8 +156,8 @@ export abstract class BaseRouter {
 
   /**
    * default response for unsupported content-type, e.g. when using a custom `res.format` response.
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
+   * @param {Request} req
+   * @param {Response} res
    */
   protected async unsupportedContentType(req: Request, res: Response): Promise<void> {
     res.status(RESPONSE_CODES.NOT_ACCEPTABLE).send(`${req.header('Accept')} not supported`);
@@ -160,10 +165,10 @@ export abstract class BaseRouter {
 
   /**
    * content-type based response
-   * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
-   * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
-   * @param data `FormatData` to specify output for different content-types
-   * @param status `number` Status-Code for response (default 200)
+   * @param {Request} req
+   * @param {Response} res
+   * @param {FormatData} data to specify output for different content-types
+   * @param {number} status code for response (default 200)
    */
   protected format(req: Request, res: Response, data: FormatData, status = RESPONSE_CODES.OK): void {
     const format: Record<string, () => void> = {
@@ -182,6 +187,12 @@ export abstract class BaseRouter {
     res.status(status).format(format);
   }
 
+
+  /**
+   * default response for routes that are not implemented yet
+   * @param {Request} req
+   * @param {Response} res
+   */
   private async notImplemented(req: Request, res: Response): Promise<void> {
     const message = `${this.constructor.name} has not implemented ${req.method} on ${req.path}`;
     res.status(RESPONSE_CODES.NOT_IMPLEMENTED).format({

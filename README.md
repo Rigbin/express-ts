@@ -10,7 +10,7 @@ Redevelopment of the original [ts-ws-template](https://github.com/Rigbin/ts-ws-t
 ## About
 
 This is a base template to create web/micro-services with [Node.js](https://nodejs.org/)
-and [Express](https://expressjs.com/), using [Typescript](https://www.typescriptlang.org/).
+and [Express](https://expressjs.com/), using [TypeScript](https://www.typescriptlang.org/).
 
 You can run it locally, as long as you have installed Node.js (I would recommend to
 use [NVM](https://github.com/nvm-sh/nvm)), or using [Docker](#docker).
@@ -241,11 +241,21 @@ Also, checkout the `protected async format`-method or the `FormatData`-type to s
 
 Support for [OpenAPI/Swagger](https://swagger.io/specification/) added,
 using [express-jsdoc-swagger](https://www.npmjs.com/package/express-jsdoc-swagger). Documentation for endpoints will be
-automatically created via JSDoc comments in `.router.ts` files.
+automatically created via JSDoc comments in code-files.
 
 Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 
-> **TODO**: Add examples
+> **TODO**: Add possibility to start project without swagger, because while developing, every
+> restart (see [nodemon](https://www.npmjs.com/package/nodemon)) > will take a while, because
+> on every (re)-start, the swagger related files will be re-created!
+
+For examples, see:
+
+* [MainRouter](./src/app/routes/main.router.ts)
+* [V1Router](./src/app/routes/v1/v1.router.ts)
+* [express-jsdoc-swagger Docs](https://brikev.github.io/express-jsdoc-swagger-docs/#/responses)
+* [JSDoc Docs](https://jsdoc.app/)
+* [Swagger Docs](https://swagger.io/docs/specification/about/)
 
 ## Planned features
 
@@ -255,7 +265,6 @@ Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 * *(extended)* Documentation
 * *TODO: consistent error response (json)*
 * ~~[Swagger](https://swagger.io/specification/) support~~
-  * *TODO: add examples*
 
 ## Useful links
 
@@ -265,3 +274,5 @@ Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 * [Node.js](https://nodejs.org/)
 * [Express](https://expressjs.com/)
 * [Jest](https://jestjs.io/)
+* [OpenAPI/Swagger](https://swagger.io/)
+* [JSDoc](https://jsdoc.app/)
