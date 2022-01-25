@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { RoutingErrorHandler } from '../../../src/app/middleware/error';
 import { CONTENT_TYPES } from '../../../src/config/constants';
-import { NAME, VERSION } from '../../../src/config/environment';
+import { PROJECT_NAME, PROJECT_VERSION } from '../../../src/config/environment';
 import { TestApp, TestResponse } from '../e2e-setup';
 
 describe('express app testing', () => {
@@ -10,7 +10,7 @@ describe('express app testing', () => {
       const response: TestResponse = await TestApp.get('/');
 
       expect(response.status).toBe(200);
-      expect(response.text).toBe(`You are on ${NAME} in version '${VERSION}'`);
+      expect(response.text).toBe(`You are on ${PROJECT_NAME} in version '${PROJECT_VERSION}'`);
     });
 
     it('should response info object on GET / with "Accept: application/json"', async () => {
@@ -18,8 +18,8 @@ describe('express app testing', () => {
 
       expect(response.headers['content-type']).toMatch(/application\/json/);
       expect(response.body).toMatchObject({
-        name: NAME,
-        version: VERSION,
+        name: PROJECT_NAME,
+        version: PROJECT_VERSION,
         method: 'GET',
       });
     });

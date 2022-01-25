@@ -1,12 +1,13 @@
-import { LICENSE, NAME, PATHS, VERSION } from '@config/environment';
+import { PATHS, PROJECT_NAME, PROJECT_VERSION, SWAGGER_DESCRIPTION, SWAGGER_LICENSE } from '@config/environment';
 import { Options } from 'express-jsdoc-swagger';
 
 export const swaggerSettings: Options = {
   info: {
-    version: VERSION,
-    title: NAME,
+    version: PROJECT_VERSION,
+    title: PROJECT_NAME,
+    description: SWAGGER_DESCRIPTION,
     license: {
-      name: LICENSE,
+      name: SWAGGER_LICENSE,
     },
   },
   baseDir: PATHS.APP_ROOT,

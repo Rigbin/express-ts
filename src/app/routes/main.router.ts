@@ -1,5 +1,5 @@
 import { RESPONSE_CODES } from '@config/constants';
-import { NAME, PATHS, VERSION } from '@config/environment';
+import { PROJECT_NAME, PATHS, PROJECT_VERSION } from '@config/environment';
 import { BaseRouter, Validators } from '@routes/base.router';
 import { V1Route } from '@routes/v1';
 import { requestDetails } from '@util/request';
@@ -39,10 +39,10 @@ export class MainRouter extends BaseRouter {
   override async getAll(req: Request, res: Response): Promise<void> {
     this.logger.debug(`app called via ${req.hostname} with ${req.method}`);
     this.format(req, res, {
-      plain: `You are on ${NAME} in version '${VERSION}'`,
+      plain: `You are on ${PROJECT_NAME} in version '${PROJECT_VERSION}'`,
       json: {
-        name: NAME,
-        version: VERSION,
+        name: PROJECT_NAME,
+        version: PROJECT_VERSION,
         ...requestDetails(req),
       },
     });

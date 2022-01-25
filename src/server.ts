@@ -4,8 +4,8 @@ if (process.env.NODEMON !== 'development') {
 }
 
 import App from '@app/app';
-import { NAME, PORT } from '@config/environment';
+import { PROJECT_NAME, PORT } from '@config/environment';
 
-process.title = NAME;
+process.title = PROJECT_NAME;
 
 App.start(PORT);

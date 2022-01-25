@@ -1,7 +1,7 @@
 {
   "name": "express-ts",
   "version": "0.1.0",
-  "description": "",
+  "description": "TypeScript Template for Express APIs",
   "author": "Harald Schwab",
   "license": "ISC",
   "repository": {
@@ -34,7 +34,13 @@
     "@util": "dist/util",
     "@pack": "package.json"
   },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "node",
+    "typescript",
+    "template",
+    "api"
+  ],
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

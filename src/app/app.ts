@@ -1,6 +1,6 @@
 import { MainRoute } from '@app/routes';
 import { CorsOptionsDelegate } from '@config/cors.settings';
-import { NAME, NODE_ENV, VERSION } from '@config/environment';
+import { PROJECT_NAME, NODE_ENV, PROJECT_VERSION } from '@config/environment';
 import { swaggerSettings } from '@config/swagger.settings';
 import { RoutingErrorHandler } from '@middleware/error';
 import { RequestLogging } from '@middleware/logging';
@@ -48,11 +48,11 @@ export default class App {
   }
 
   private start(): void {
-    this.logger.info(`${NAME} starting...`);
+    this.logger.info(`${PROJECT_NAME} starting...`);
     this.app.listen(this.port, () => {
-      this.logger.info(`${NAME} successfully started and is listening on port ${this.port}`);
-      this.logger.info(`${NAME} is running on environment '${NODE_ENV}'`);
-      this.logger.info(`${NAME} is running in version '${VERSION}'`);
+      this.logger.info(`${PROJECT_NAME} successfully started and is listening on port ${this.port}`);
+      this.logger.info(`${PROJECT_NAME} is running on environment '${NODE_ENV}'`);
+      this.logger.info(`${PROJECT_NAME} is running in version '${PROJECT_VERSION}'`);
     });
   }
 }

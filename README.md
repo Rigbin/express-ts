@@ -151,10 +151,12 @@ in [environment](./src/config/environment.ts), you can find an [example](.env.ex
 #### Used Environment Variables
 
 | VAR | DESCRIPTION | DEFAULT |
-| --- | ----------- | ------- |
-| `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`) | `development` |
+| --- |-------------| --- |
+| `NODE_ENV` | what kind of 'environment' you are (`development`, `production`, `testing`)| `development` |
 | `SERVICE_PORT` | on what port should the service listening on | `1234` |
 | `CORS_ALLOWED` | pass a list of origins that are allowed by [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Use *space* or *comma (,)* to separate multiple origins | `[]` |
+| `SWAGGER_DESCRIPTION` | custom description displayed on swagger-ui, uses project description from otherwise | see [package.json](./package.json) |
+| `SWAGGER_LISENCE` | Lisence name displayed on swagger-ui, uses project license otherwise | see [package.json](./package.json) |                                                                                                                                     
 
 ## Testing
 

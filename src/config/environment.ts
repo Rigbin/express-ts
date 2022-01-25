@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { name, version, license } = require('@pack');
+const { description, license, name, version } = require('@pack');
 
 // init .env
 config();
@@ -10,6 +10,9 @@ config();
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
 const PORT: number = parseInt(process.env.SERVICE_PORT || '1234');
 const CORS_ALLOWED: string[] = process.env.CORS_ALLOWED?.split(/[\s,]+/) || [];
+
+const SWAGGER_LICENSE: string = process.env.SWAGGER_LICENSE || license;
+const SWAGGER_DESCRIPTION: string = process.env.SWAGGER_DESCRIPTION || description;
 
 const APP_ROOT = path.join(__dirname, '..');
 
@@ -24,7 +27,10 @@ export {
   NODE_ENV,
   PORT,
   PATHS,
-  name as NAME,
-  version as VERSION,
-  license as LICENSE,
+
+  name as PROJECT_NAME,
+  version as PROJECT_VERSION,
+
+  SWAGGER_DESCRIPTION,
+  SWAGGER_LICENSE,
 };
