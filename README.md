@@ -245,6 +245,8 @@ automatically created via JSDoc comments in code-files.
 
 Checkout Swagger-UI on endpoint [/api-docs](http://localhost:1234/api-docs).
 
+![api-docs](docs/imgs/api-docs-example.png)
+
 > **TODO**: Add possibility to start project without swagger, because while developing, every
 > restart (see [nodemon](https://www.npmjs.com/package/nodemon)) > will take a while, because
 > on every (re)-start, the swagger related files will be re-created!
@@ -256,6 +258,9 @@ For examples, see:
 * [express-jsdoc-swagger Docs](https://brikev.github.io/express-jsdoc-swagger-docs/#/responses)
 * [JSDoc Docs](https://jsdoc.app/)
 * [Swagger Docs](https://swagger.io/docs/specification/about/)
+
+### Known Issues
+You cannot provide a response-**example** for `text/plain` response! See [Github Issue](https://github.com/BRIKEV/express-jsdoc-swagger/issues/201).
 
 ## Planned features
 
