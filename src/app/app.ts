@@ -1,12 +1,14 @@
 import { MainRoute } from '@app/routes';
 import { CorsOptionsDelegate } from '@config/cors.settings';
 import { NAME, NODE_ENV, VERSION } from '@config/environment';
+import { swaggerSettings } from '@config/swagger.settings';
 import { RoutingErrorHandler } from '@middleware/error';
 import { RequestLogging } from '@middleware/logging';
 import { WSUpgrade } from '@middleware/ws';
 import { LogFactory, Logger } from '@util/logger';
 import cors from 'cors';
 import express, { Express } from 'express';
+import expressJSDocSwagger from 'express-jsdoc-swagger';
 
 export default class App {
   private static instance: App;
@@ -42,6 +44,7 @@ export default class App {
     this.app.use(WSUpgrade());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json({ limit: '5MB' }));
+    expressJSDocSwagger(this.app)(swaggerSettings);
   }
 
   private start(): void {

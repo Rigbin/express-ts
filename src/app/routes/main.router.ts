@@ -29,10 +29,12 @@ export class MainRouter extends BaseRouter {
   }
 
   /**
-   * custom-callback for GET '/'
+   * GET /
+   * @summary custom-callback for GET '/'
    * @param req [Express `Request`](https://expressjs.com/en/api.html#req) object
    * @param res [Express `Response`](https://expressjs.com/en/api.html#res) object
    * response will be information about application (name, version, ...)
+   * @return {string} 200 - success response - text/plain
    */
   override async getAll(req: Request, res: Response): Promise<void> {
     this.logger.debug(`app called via ${req.hostname} with ${req.method}`);

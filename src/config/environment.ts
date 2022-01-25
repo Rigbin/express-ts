@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 import path from 'path';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { name, version } = require('@pack');
+const { name, version, license } = require('@pack');
 
 // init .env
 config();
@@ -26,4 +26,5 @@ export {
   PATHS,
   name as NAME,
   version as VERSION,
+  license as LICENSE,
 };
